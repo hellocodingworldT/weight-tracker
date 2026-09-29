@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2f6fdb">
+  <title>몸무게 기록</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1 id="view-title">기록</h1>
+    <button id="btn-settings" class="icon-btn" type="button" aria-label="설정">⚙</button>
+  </header>
+
+  <main>
+    <!-- ① 기록 -->
+    <section id="view-record" class="view">
+      <form id="record-form" novalidate>
+        <label for="input-date">날짜</label>
+        <input id="input-date" type="date" required>
+
+        <label for="input-weight">몸무게 (kg)</label>
+        <input id="input-weight" class="weight-input" type="number" inputmode="decimal"
+               step="0.1" min="20" max="300" placeholder="0.0" required>
+
+        <p id="overwrite-note" class="note" hidden></p>
+
+        <button id="btn-save" class="primary" type="submit">저장</button>
+      </form>
+
+      <p id="record-message" class="message" role="status"></p>
+
+      <div class="summary">
+        <div>
+          <span class="summary-label">최근 몸무게</span>
+          <strong id="summary-latest">-</strong>
+        </div>
+        <div>
+          <span class="summary-label">시작 대비 변화</span>
+          <strong id="summary-change">-</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- ② 그래프 -->
+    <section id="view-graph" class="view" hidden>
+      <div class="period" role="group" aria-label="기간">
+        <button type="button" data-range="7">1주</button>
+        <button type="button" data-range="30" class="active">1달</button>
+        <button type="button" data-range="all">전체</button>
+      </div>
+
+      <p class="graph-range">
+        <span id="graph-range-text"></span>
+        <span id="graph-pan-hint" class="note" hidden>← 밀어서 이전 기록 보기</span>
+      </p>
+
+      <div class="chart-box">
+        <canvas id="weight-chart" aria-label="몸무게 변화 그래프" role="img"></canvas>
+        <!-- 마무리 단계에서 캐릭터가 들어갈 자리 -->
+        <p id="graph-empty" class="chart-empty" hidden>이 기간에는 기록이 없어요.</p>
+      </div>
+
+      <div class="summary stats">
+        <div>
+          <span class="summary-label">최저</span>
+          <strong id="stat-min">-</strong>
+        </div>
+        <div>
+          <span class="summary-label">최고</span>
+          <strong id="stat-max">-</strong>
+        </div>
+        <div>
+          <span class="summary-label">기간 변화</span>
+          <strong id="stat-change">-</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- ③ 목록 -->
+    <section id="view-list" class="view" hidden>
+      <p id="list-message" class="message" role="status"></p>
+      <!-- 마무리 단계에서 캐릭터가 들어갈 자리 -->
+      <div id="list-empty" class="empty" hidden>
+        <p>아직 기록이 없어요.<br>기록 탭에서 오늘 몸무게를 적어 보세요.</p>
+      </div>
+      <ul id="record-list" class="record-list"></ul>
+    </section>
+
+    <!-- 설정 -->
+    <section id="view-settings" class="view" hidden>
+      <form id="settings-form" novalidate>
+        <label for="input-url">웹앱 URL</label>
+        <input id="input-url" type="url" placeholder="https://script.google.com/macros/s/.../exec"
+               autocomplete="off" required>
+
+        <label for="input-key">비밀 키</label>
+        <input id="input-key" type="password" autocomplete="off" required>
+
+        <button class="primary" type="submit">저장하고 연결 확인</button>
+      </form>
+      <p id="settings-message" class="message" role="status"></p>
+      <p class="note">URL과 키는 이 폰에만 저장돼요.</p>
+    </section>
+  </main>
+
+  <nav class="tabbar">
+    <button type="button" data-view="record" class="active">기록</button>
+    <button type="button" data-view="graph">그래프</button>
+    <button type="button" data-view="list">목록</button>
+  </nav>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
